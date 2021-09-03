@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class Sala {
     private String nome;
 
     @NotNull
-    private Date dataHora;
+    private Timestamp dataHora;
 
     @Override
     public String toString() {

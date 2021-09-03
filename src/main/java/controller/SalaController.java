@@ -23,18 +23,18 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/v1")
+@RequestMapping(path = "/api/v1")
 public class SalaController {
 
     @Autowired
     private SalaRepository repositorioSala;
 
-    @GetMapping("/salas")
+    @GetMapping(value="/salas")
     public List<Sala> obterTodasAsSalas() {
         return repositorioSala.findAll();
     }
 
-    @GetMapping("/sala/{idSala}")
+    @GetMapping(value="/sala/{idSala}")
     public ResponseEntity<Sala> obterPorId(@PathVariable(value="idSala") Long idSala) throws ExcecaoRecursoNaoEncontrado {
         Optional<Sala> sala = repositorioSala.findById( idSala );
 
@@ -45,13 +45,13 @@ public class SalaController {
         return ResponseEntity.ok().body( sala.get() );
     }
 
-    @PostMapping("/sala")
+    @PostMapping(value="/sala")
     public Sala criarSala( @RequestBody Sala sala ) {
         Sala novaSala = repositorioSala.save( sala );
         return novaSala;
     }
 
-    @PutMapping("/sala/{idSala}")
+    @PutMapping(value="/sala/{idSala}")
     public ResponseEntity<Sala> atualizarDadosSala( @PathVariable(value="idSala") Long idSala,
                                                     @RequestBody Sala sala ) throws ExcecaoRecursoNaoEncontrado {
 
@@ -66,7 +66,7 @@ public class SalaController {
         return ResponseEntity.ok( salaExistente );
     }
 
-    @DeleteMapping("/sala/{idSala}")
+    @DeleteMapping(value="/sala/{idSala}")
     public Map< String, Boolean > removerDadosSala( @PathVariable(value="idSala") Long idSala ) throws ExcecaoRecursoNaoEncontrado {
 
         Sala sala = repositorioSala.findById( idSala )
