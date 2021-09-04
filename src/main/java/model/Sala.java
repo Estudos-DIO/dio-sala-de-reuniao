@@ -34,13 +34,16 @@ public class Sala {
     @NotNull
     private Timestamp dataHora;
 
+    @NotNull
+    private Integer duracao;
+
     @Override
     public String toString() {
         return "Sala{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", dataHora=" + dataHora +
+                ", duracao=" + duracao +
                 '}';
     }
-
 }
