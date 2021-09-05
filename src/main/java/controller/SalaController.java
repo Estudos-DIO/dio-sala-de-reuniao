@@ -4,7 +4,6 @@ import exception.ExcecaoRecursoNaoEncontrado;
 import model.Sala;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import repository.SalaRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -35,14 +33,12 @@ public class SalaController {
     }
 
     @GetMapping(value="/sala/{idSala}")
-    public ResponseEntity<Sala> obterPorId(@PathVariable(value="idSala") Long idSala) throws ExcecaoRecursoNaoEncontrado {
-        Optional<Sala> sala = repositorioSala.findById( idSala );
+    public ResponseEntity<Object> obterPorId(@PathVariable(value="idSala") Long idSala) throws ExcecaoRecursoNaoEncontrado {
 
-        if( !sala.isPresent() ) {
-            throw new ExcecaoRecursoNaoEncontrado( "Sala não encontrada " + idSala );
-        }
+        Sala sala = repositorioSala.findById( idSala )
+                .orElseThrow( () -> new ExcecaoRecursoNaoEncontrado( "Sala NÃO encontrada -> " + idSala ) );
 
-        return ResponseEntity.ok().body( sala.get() );
+        return ResponseEntity.ok().body( sala );
     }
 
     @PostMapping(value="/sala")
@@ -52,11 +48,10 @@ public class SalaController {
     }
 
     @PutMapping(value="/sala/{idSala}")
-    public ResponseEntity<Sala> atualizarDadosSala( @PathVariable(value="idSala") Long idSala,
-                                                    @RequestBody Sala sala ) throws ExcecaoRecursoNaoEncontrado {
+    public ResponseEntity<Sala> atualizarDadosSala( @PathVariable(value="idSala") Long idSala, @RequestBody Sala sala ) throws ExcecaoRecursoNaoEncontrado {
 
         Sala salaExistente = repositorioSala.findById( idSala )
-                .orElseThrow( () -> new ExcecaoRecursoNaoEncontrado( "Sala não encontrada " + idSala ) );
+                .orElseThrow( () -> new ExcecaoRecursoNaoEncontrado( "Sala NÃO encontrada -> " + idSala ) );
 
         salaExistente.setNome( sala.getNome() );
         salaExistente.setDataHora( sala.getDataHora() );
@@ -70,7 +65,7 @@ public class SalaController {
     public Map< String, Boolean > removerDadosSala( @PathVariable(value="idSala") Long idSala ) throws ExcecaoRecursoNaoEncontrado {
 
         Sala sala = repositorioSala.findById( idSala )
-                .orElseThrow( () -> new ExcecaoRecursoNaoEncontrado( "Sala não encontrada " + idSala ) );
+                .orElseThrow( () -> new ExcecaoRecursoNaoEncontrado( "Sala NÃO encontrada -> " + idSala ) );
 
         repositorioSala.deleteById( idSala );
 

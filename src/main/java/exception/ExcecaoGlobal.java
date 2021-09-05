@@ -1,29 +1,33 @@
 package exception;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
 
-@ControllerAdvice
-public class ExcecaoGlobal {
+@SuppressWarnings({"unchecked","rawtypes"})
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@RestControllerAdvice
+public class ExcecaoGlobal extends ResponseEntityExceptionHandler {
 
-    public ExcecaoGlobal(Date date, String message, String description) {
+    @ExceptionHandler(value={ExcecaoRecursoNaoEncontrado.class})
+    public ResponseEntity<Object> excecaoRecursoNaoEncontrado( ExcecaoRecursoNaoEncontrado ex, WebRequest request ) {
+        DetalhesDoErro detalhesDoErro = new DetalhesDoErro( new Date(), ex.getMessage(), request.getDescription(false) );
+        ResponseEntity<Object> resposta = new ResponseEntity<>( detalhesDoErro, HttpStatus.NOT_FOUND );
+        return resposta;
     }
 
-    @ExceptionHandler(ExcecaoRecursoNaoEncontrado.class)
-    public ResponseEntity<?> recursoNaoEncontradoException(ExcecaoRecursoNaoEncontrado ex, WebRequest request) {
-        DetalhesDoErro detalhesDoErro = new DetalhesDoErro( new Date(), ex.getMessage(), request.getDescription( false ) );
-        return new ResponseEntity<>( detalhesDoErro, HttpStatus.NOT_FOUND );
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> tratadorExcecaoGlobal( Exception ex, WebRequest request ) {
-        DetalhesDoErro detalhesDoErro = new DetalhesDoErro( new Date(), ex.getMessage(), request.getDescription( false ) );
-        return new ResponseEntity<>( detalhesDoErro, HttpStatus.INTERNAL_SERVER_ERROR );
+    @ExceptionHandler(value=Exception.class)
+    public ResponseEntity<Object> excecaoRecursoNaoEncontrado( Exception ex, WebRequest request ) {
+        DetalhesDoErro detalhesDoErro = new DetalhesDoErro( new Date(), ex.getMessage(), request.getDescription(false) );
+        ResponseEntity<Object> resposta = new ResponseEntity<>( detalhesDoErro, HttpStatus.NOT_FOUND );
+        return resposta;
     }
 
 }
