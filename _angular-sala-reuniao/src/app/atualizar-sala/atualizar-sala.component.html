@@ -1,0 +1,24 @@
+<!-- <p>atualizar-sala works!</p> -->
+
+<h3>Atualizar dados da sala:</h3>
+<div [hidden]="enviado" style="width: 400px;">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nome:</label>
+      <input type="text" class="form-control" id="nome" required [(ngModel)]="sala.nome" name="nome">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Data:</label>
+      <input type="text" class="form-control" id="data" required [(ngModel)]="sala.data" name="data">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Duração:</label>
+      <input type="text" class="form-control" id="duracao" required [(ngModel)]="sala.duracao" name="duracao">
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-success">Enviar</button>
+  </form>
+</div>
+
